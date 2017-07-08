@@ -157,18 +157,25 @@ function generate_slider_script($field, $value = ''){
 	$start = ($sliderType == true)?$defaultMin:"[$defaultMin, $defaultMax]";
 	$inputValue = ($sliderType == true)?"minValue":"'' + minValue + ' $betweenText ' + maxValue;";
 	$value = ($sliderType == true)?$prefix.$rangeMin.$postfix:$prefix.$rangeMin.$postfix.' '.$betweenText.' '. $prefix.$rangeMax.$postfix;
-	
+	$sliderTypeVal = ($sliderType == true)?'true':'false';
 	
 	$script = "
 	function hii_range_slider_init_$field_id(){
 		var $rs_var = document.getElementById('$rs_var'),
+			slider_type = $sliderTypeVal,
 			in_var_min = document.getElementById('$in_var_min'),
 			in_var_max = document.getElementById('$in_var_max'),
 			inputNumber = document.getElementById('$in_var'),
 			showTextDisplay = $showTextDisplay,
 			displayNumber = document.getElementById('$rs_var_display');
+			if(slider_type == false){
+				start = [in_var_min.value, in_var_max.value];
+			} else {
+				start = in_var_min.value;
+			}
+			
 			noUiSlider.create($rs_var, {
-				start: $start,
+				start: start,
 				connect: $connect,
 				step: $rangeslider_step,
 				tooltips: $tooltip,
@@ -184,8 +191,8 @@ function generate_slider_script($field, $value = ''){
 				})
 				
 			});
-			var minValue = $defaultMin,
-				maxValue = $defaultMax;
+			var minValue = in_var_min.value,
+				maxValue = in_var_min.value;
 			$rs_var.noUiSlider.on('update', function( values, handle ) {
 
 				var value = values[handle];
