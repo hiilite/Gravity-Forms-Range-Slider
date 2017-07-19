@@ -23,18 +23,19 @@ function generate_slider_html($field, $value = null){
 	
 	$betweenText 	= $field['betweenText'];
 	
-	if(is_array($value)) {		
-		$field['defaultMin']  	= $value['1'];
-		$field['defaultMax'] 	= $value['2'];
-	} elseif ($value != null){
-		
-		$new_values = explode(" $betweenText ", $value);
-		
-		$field['defaultMin']  	= (isset($new_values[0]))?preg_replace('/\D/', '', $new_values[0]):null;
-		$field['defaultMax'] 	= (isset($new_values[1]))?preg_replace('/\D/', '', $new_values[1]):0;
-		
-		
-	}
+	
+	if(isset($value) && $value != ''):
+		if(is_array($value)){
+			
+			$field['defaultMin']  	= (isset($value[1]))?preg_replace('/[^\d.]/', '', $value[1]):0;
+			$field['defaultMax'] 	= (isset($value[2]))?preg_replace('/[^\d.]/', '', $value[2]):0;
+		} else {
+			$new_values = explode(" $betweenText ", $value);
+			$field['defaultMin']  	= preg_replace('/[^\d.]/', '', $new_values[0]);
+			$field['defaultMax'] 	= preg_replace('/[^\d.]/', '', $new_values[1]);
+		}
+	endif;
+	
 
 	$rs_var = 'rangeslider_'.$field['id'];
    	$rs_var_display = $rs_var.'_display';
@@ -45,8 +46,8 @@ function generate_slider_html($field, $value = null){
 	$sliderType 	= $field['sliderType'];
 	$rangeMin 		= $field['rangeMin'];
 	$rangeMax 		= $field['rangeMax'];
-	$defaultMin	 	= (isset($value['1']))?$value['1']:$field['defaultMin'];
-	$defaultMax 	= (isset($value['2']))?$value['2']:$field['defaultMax'];
+	$defaultMin	 	= $field['defaultMin'];
+	$defaultMax 	= $field['defaultMax'];
 	$rangeslider_step=$field['rangeslider_step'];
 	$prefix 		= $field['prefix'];
 	$thousand		= $field['thousand'];
@@ -112,25 +113,23 @@ function generate_slider_script($field, $value = ''){
    	$in_var = 	  'input_'.$formid.'_'.$field['id'];
    	$in_var_min = 'input_'.$formid.'_'.$field['id'].'_1';
    	$in_var_max = 'input_'.$formid.'_'.$field['id'].'_2';
+	if(isset($value) && $value != ''):
+		if(is_array($value)){
+			
+			$field['defaultMin']  	= (isset($value[1]))?preg_replace('/[^\d.]/', '', $value[1]):0;
+			$field['defaultMax'] 	= (isset($value[2]))?preg_replace('/[^\d.]/', '', $value[2]):0;
+		} else {
+			$new_values = explode(" $betweenText ", $value);
+			$field['defaultMin']  	= preg_replace('/[^\d.]/', '', $new_values[0]);
+			$field['defaultMax'] 	= preg_replace('/[^\d.]/', '', $new_values[1]);
+		}
+	endif;
 	
-	if(is_array($value)) {		
-		$field['defaultMin']  	= (isset($value['1']))?preg_replace('/\D/', '', $value['1']):0;
-		$field['defaultMax'] 	= (isset($value['2']))?preg_replace('/\D/', '', $value['2']):0;
-	} elseif ($value != null){
-		
-		$new_values = explode(" $betweenText ", $value);
-		
-		$field['defaultMin']  	= (isset($new_values[0]))?preg_replace('/\D/', '', $new_values[0]):0;
-		$field['defaultMax'] 	= (isset($new_values[1]))?preg_replace('/\D/', '', $new_values[1]):0;
-	} else {
-		$field['defaultMin'] = preg_replace('/\D/', '', $field['defaultMin']);
-		$field['defaultMax'] = preg_replace('/\D/', '', $field['defaultMax']);
-	}
 	$sliderType 	= $field['sliderType'];
 	$rangeMin 		= $field['rangeMin'];
 	$rangeMax 		= $field['rangeMax'];
-	$defaultMin	 	= (isset($value['1']))?$value['1']:$field['defaultMin'];
-	$defaultMax 	= (isset($value['2']))?$value['2']:$field['defaultMax'];
+	$defaultMin	 	= $field['defaultMin'];
+	$defaultMax 	= $field['defaultMax'];
 	$rangeslider_step=$field['rangeslider_step'];
 	$prefix 		= $field['prefix'];
 	$thousand		= $field['thousand'];
@@ -169,7 +168,7 @@ function generate_slider_script($field, $value = ''){
 			showTextDisplay = $showTextDisplay,
 			displayNumber = document.getElementById('$rs_var_display');
 			if(slider_type == false){
-				start = [in_var_min.value, in_var_max.value];
+				start = [in_var_min.value.replace( /[^\d.]/g, '' ), in_var_max.value.replace( /[^\d.]/g, '' )];
 			} else {
 				start = in_var_min.value;
 			}
