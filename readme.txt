@@ -23,6 +23,10 @@ Installing "Gravity Forms Range Slider" can be done by using the following steps
 This plugin adds a Range Slider option to the Advanced Fields of Gravity Forms.
 
 	== Changelog ==
+	= 1.0.7 =
+	* 2017-07-19
+	* Fixed issue with Save and Continue
+
 	= 1.0.6 =
 	* 2017-07-06
 	* Fixed issue with AJAX and values passing between pages
