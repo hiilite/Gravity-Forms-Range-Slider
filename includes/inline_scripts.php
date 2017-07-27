@@ -8,6 +8,7 @@
  * @param string $value (default: '')
  * @return void
  */
+
 function generate_slider_html($field, $value = null){
 	
 	
@@ -51,6 +52,7 @@ function generate_slider_html($field, $value = null){
 	$rangeslider_step=$field['rangeslider_step'];
 	$prefix 		= $field['prefix'];
 	$thousand		= $field['thousand'];
+	$sliderDirection= ($field['sliderDirection'] != '')?$field['sliderDirection']:'ltr';
 	
 	$postfix 		= $field['postfix'];
 	$decimals 		= $field['decimals'];
@@ -138,6 +140,7 @@ function generate_slider_script($field, $value = ''){
 	$decimals 		= $field['decimals'];
 	$showTooltip 	= $field['showTooltip'];
 	$showTextDisplay= ($field['showTextDisplay'])?'true':'false';
+	$sliderDirection= ($field['sliderDirection'] != '')?$field['sliderDirection']:'ltr';
 	$required 		= $field['required'];
 	
 
@@ -176,6 +179,7 @@ function generate_slider_script($field, $value = ''){
 			noUiSlider.create($rs_var, {
 				start: start,
 				connect: $connect,
+				direction: '$sliderDirection',
 				step: $rangeslider_step,
 				tooltips: $tooltip,
 				range: {

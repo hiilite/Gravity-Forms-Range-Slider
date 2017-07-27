@@ -26,7 +26,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-define( 'GF_RANGESLIDER_VERSION', '1.0.7' );
+define( 'GF_RANGESLIDER_VERSION', '1.0.8' );
 define( 'GF_RANGESLIDER_DIR_URL', plugin_dir_url( __FILE__ ) );
 define( 'GF_RANGESLIDER_DIR_PATH', plugin_dir_path( __FILE__ ) );
 require_once( 'includes/inline_scripts.php' );
@@ -303,6 +303,7 @@ function hii_rangeslider_set_defaults() {
 	        field.showTextDisplay = false;
 	        field.required = false;
 	        field.thousand = ',';
+	        field.sliderDirection = 'ltr';
 
 	    break;
 	<?php
@@ -344,6 +345,7 @@ function hii_rangeslider_editor_js(){
 					jQuery("#showTextDisplay").attr("checked", field.showTextDisplay == true);
 					jQuery("#required").attr("checked", field.required == true);
 					jQuery("#thousand").val(field.thousand);
+					jQuery("#sliderDirection").val(field.sliderDirection);
 				});
 			});
 			
@@ -426,13 +428,13 @@ add_filter( 'gform_admin_pre_render', 'add_merge_tags' );
 function hii_range_slider_settings( $position, $form_id ) {
 
 	// TODO: Change to use dual slider values
-	if ( $position == 0) {
+	if ( $position == 0) :
 		?>
 			<li class="rangeslider_value_type field_setting rangeslider_settings">
-				<div style="clear:both;">
+				<label class="section_label" style="clear:both;">
 					<?php _e( 'Slider Type', 'rangeslider-locale' ); ?>
 					<?php gform_tooltip( 'rangeslider_value_type' ); ?>
-				</div>
+				</label>
 				<div style="width:37%;float:left">
 					<input type="checkbox" id="sliderType" style="" onchange="SetFieldProperty('sliderType', this.checked);" />
 					<label for="sliderType" style="display:inline-block;vertical-align:text-top;" for="sliderType"><?php _e( 'Single Slider', 'rangeslider-locale' ); ?></label>
@@ -440,10 +442,10 @@ function hii_range_slider_settings( $position, $form_id ) {
 				
 			</li>
 			<li class="rangeslider_value_relations field_setting rangeslider_settings">
-				<div style="clear:both;">
+				<label style="clear:both;" class="section_label">
 					<?php _e( 'Value Range', 'rangeslider-locale' ); ?>
 					<?php gform_tooltip( 'rangeslider_value_relations' ); ?>
-				</div>
+				</label>
 				<div style="width:33%;float:left">
 					<input type="number" id="rangeMin" style="width:100%;" onchange="SetFieldProperty('rangeMin', this.value);" />
 					<label for="rangeMin"><?php _e( 'Min', 'rangeslider-locale' ); ?></label>
@@ -462,10 +464,10 @@ function hii_range_slider_settings( $position, $form_id ) {
 			</li>
 			
 			<li class="rangeslider_value_defaults field_setting rangeslider_settings">
-				<div style="clear:both;">
+				<label style="clear:both;" class="section_label">
 					<?php _e( 'Range Defaults', 'rangeslider-locale' ); ?>
 					<?php gform_tooltip( 'rangeslider_value_relations' ); ?>
-				</div>
+				</label>
 				<div style="width:50%;float:left">
 					<input type="text" id="defaultMin" style="width:100%;" onchange="SetFieldProperty('defaultMin', this.value);" />
 					<label for="defaultMin"><?php _e( 'Start', 'rangeslider-locale' ); ?></label>
@@ -478,9 +480,9 @@ function hii_range_slider_settings( $position, $form_id ) {
 			</li>
 			
 			<li class="rangeslider_text_values field_setting rangeslider_settings">
-				<div style="clear:both;">
+				<label style="clear:both;" class="section_label">
 					<?php _e( 'Formatting', 'rangeslider-locale' ); ?>
-				</div>
+				</label>
 				<div style="width:25%;float:left">
 					<input type="text" id="prefix" style="width:100%;" onchange="SetFieldProperty('prefix', this.value);" />
 					<label for="prefix"><?php _e( 'Prefix', 'rangeslider-locale' ); ?></label>
@@ -504,9 +506,9 @@ function hii_range_slider_settings( $position, $form_id ) {
 			</li>
 			
 			<li class="rangeslider_text_values field_setting rangeslider_settings">
-				<div style="clear:both;">
+				<label style="clear:both;" class="section_label">
 					<?php _e( 'Extras', 'rangeslider-locale' ); ?>
-				</div>
+				</label>
 				<div style="width:37%;float:left">
 					<input type="checkbox" id="showTooltip" style="" onchange="SetFieldProperty('showTooltip', this.checked);" />
 					<label for="showTooltip" style="display:inline-block;vertical-align:text-top;"><?php _e( 'Show Tooltip', 'rangeslider-locale' ); ?></label>
@@ -522,21 +524,35 @@ function hii_range_slider_settings( $position, $form_id ) {
 					<label for="decimals" ><?php _e( 'Decimals', 'rangeslider-locale' ); ?></label>
 				</div>
 				
-				<!--div style="width:37%;float:left">
-					<input type="checkbox" id="required"  style="" onchange="SetFieldProperty('required', this.checked);" />
-					<label for="required" style="display:inline-block;vertical-align:text-top;"><?php _e( 'Use For Calculations', 'rangeslider-locale' ); ?></label><?php gform_tooltip( 'rangeslider_value_required' ); ?>
-				</div-->
 				<br class="clear">
 			</li>
-			
-			
 		<?php
-	}
+	endif; // position 0
 } // end hii_range_slider_settings
 add_action( 'gform_field_standard_settings' , 'hii_range_slider_settings' , 10, 2 );
 
-
-
+function hii_range_slider_appearance_settings($position, $form_id){
+	
+	if( $position == 0):
+		?>
+		<li class="rangeslider_value_direction field_setting rangeslider_settings">
+			<label style="clear:both;" class="section_label">
+				<?php _e( 'Direction', 'rangeslider-locale' ); ?>
+				<?php gform_tooltip( 'rangeslider_value_direction' ); ?>
+			</label>
+			<div style="">
+				<select id="sliderDirection" style="" onchange="SetFieldSliderDirection(this);">
+					<option value="ltr"><?php _e( 'Left-to-Right');?></option>
+					<option value="rtl"><?php _e( 'Right-to-Left');?></option>
+				</select>
+			</div>
+			
+		</li>
+		<?php
+	endif; // position 0
+	
+}
+add_action( 'gform_field_appearance_settings' , 'hii_range_slider_appearance_settings', 10, 2);
 
 /**
  * hii_rangeslider_tooltips function.
@@ -555,6 +571,7 @@ function hii_rangeslider_tooltips( $tooltips ) {
 		$tooltips['rangeslider_value_type'] = __( '<h6>Slider Type</h6>Select whether to use a single slider or a range slider.', 'rangeslider-locale' );
 		
 		$tooltips['rangeslider_value_required'] = __( '<h6>Use For Calculations</h6>Allows values to be used in calculations.', 'rangeslider-locale' );
+		$tooltips['rangeslider_value_direction'] = __( '<h6>Change Direction</h6>Reverses the handles and the text direction', 'rangeslider-locale' );
 	
 	return $tooltips;
 
@@ -580,6 +597,7 @@ function rangeslider_enqueue() {
 	// Enqueue necessary scripts
 	wp_enqueue_script( 'noUiSlider', GF_RANGESLIDER_DIR_URL . 'js/noUiSlider/nouislider.js', array( 'jquery' ), GF_RANGESLIDER_VERSION );
 	wp_enqueue_script( 'wnumb', GF_RANGESLIDER_DIR_URL . 'js/wnumb/wNumb.js', array( 'jquery' ), GF_RANGESLIDER_VERSION );
+	wp_enqueue_script( 'rangeslider_form_editor', GF_RANGESLIDER_DIR_URL . 'js/rangeslider_form_editor.js', array( 'jquery' ), GF_RANGESLIDER_VERSION );
 
 } // end rangeslider_enqueue
 
@@ -653,6 +671,7 @@ function hii_rangeslider_register_safe_script( $scripts ){
     //registering my script with Gravity Forms so that it gets enqueued when running on no-conflict mode
     $scripts[] = 'noUiSlider';
     $scripts[] = 'wnumb';
+    $scripts[] = 'rangeslider_form_editor';
     
     return $scripts;
 
