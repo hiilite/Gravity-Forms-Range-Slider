@@ -206,8 +206,8 @@ function generate_slider_script($field, $value = ''){
 					minValue = value;
 				}
 				inputNumber.value = $inputValue;
-				in_var_min.value = minValue;
-				in_var_max.value = maxValue;
+				in_var_min.value = Number( minValue.replace(/[^0-9\.]+/g,'') );
+				in_var_max.value = Number( maxValue.replace(/[^0-9\.]+/g,'') );
 				fireEvent(in_var_min, 'change');
 				if($showTextDisplay == true)displayNumber.innerHTML = $inputValue;
 			});

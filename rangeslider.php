@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms Range Slider Add-On
 Plugin URI: https://hiilite.com/wordpress-plugins/gravity-forms-range-slider/
 Description: Creates a Gravity Forms range slider field that allows users to pick a data range.
-Version: 1.0.7
+Version: 1.0.9
 Author: Hiilite
 Author URI: https://hiilite.com
 Text Domain: gravityformsrangeslider
@@ -26,7 +26,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-define( 'GF_RANGESLIDER_VERSION', '1.0.8' );
+define( 'GF_RANGESLIDER_VERSION', '1.0.9' );
 define( 'GF_RANGESLIDER_DIR_URL', plugin_dir_url( __FILE__ ) );
 define( 'GF_RANGESLIDER_DIR_PATH', plugin_dir_path( __FILE__ ) );
 require_once( 'includes/inline_scripts.php' );
