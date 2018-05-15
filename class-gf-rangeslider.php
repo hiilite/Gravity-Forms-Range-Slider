@@ -363,9 +363,12 @@ class GFRangeslider extends GF_Field {
 					step: $rangeslider_step,
 					tooltips: $tooltip,
 					range: {
-						'min': $rangeMin,
-						'max': $rangeMax
-					},
+		'min': [   0, 5000 ],
+		'25%': [  100000, 10000 ],
+		'50%': [  300000, 50000 ],
+		'75%': [  1000000, 1000000 ],    
+		'max': [ 25000000 ]
+},
 					format: wNumb({
 						decimals: $decimals,
 						prefix: '$prefix',
@@ -391,7 +394,7 @@ class GFRangeslider extends GF_Field {
 					if($showTextDisplay == true)displayNumber.innerHTML = $inputValue;
 				});
 		} 
-		hii_range_slider_init_$field_id();";
+		document.onreadystatechange = hii_range_slider_init_$field_id();";
 	
 		if($required == true)
 		{

@@ -163,56 +163,62 @@ function generate_slider_script($field, $value = ''){
 	
 	$script = "
 	function hii_range_slider_init_$field_id(){
-		var $rs_var = document.getElementById('$rs_var'),
-			slider_type = $sliderTypeVal,
-			in_var_min = document.getElementById('$in_var_min'),
-			in_var_max = document.getElementById('$in_var_max'),
-			inputNumber = document.getElementById('$in_var'),
-			showTextDisplay = $showTextDisplay,
-			displayNumber = document.getElementById('$rs_var_display');
+		if(typeof $rs_var === 'undefined'){
+			var $rs_var = document.getElementById('$rs_var'),
+				slider_type = $sliderTypeVal,
+				in_var_min = document.getElementById('$in_var_min'),
+				in_var_max = document.getElementById('$in_var_max'),
+				inputNumber = document.getElementById('$in_var'),
+				showTextDisplay = $showTextDisplay,
+				displayNumber = document.getElementById('$rs_var_display');
 			if(slider_type == false){
 				start = [in_var_min.value.replace( /[^\d.]/g, '' ), in_var_max.value.replace( /[^\d.]/g, '' )];
 			} else {
 				start = in_var_min.value;
 			}
-			
-			noUiSlider.create($rs_var, {
-				start: start,
-				connect: $connect,
-				direction: '$sliderDirection',
-				step: $rangeslider_step,
-				tooltips: $tooltip,
-				range: {
-					'min': $rangeMin,
-					'max': $rangeMax
-				},
-				format: wNumb({
-					decimals: $decimals,
-					prefix: '$prefix',
-					postfix: '$postfix',
-					thousand: '$thousand'
-				})
+			try {
+				noUiSlider.create($rs_var, {
+					start: start,
+					connect: $connect,
+					direction: '$sliderDirection',
+					step: $rangeslider_step,
+					tooltips: $tooltip,
+					range: {
+						'min': $rangeMin,
+						'max': $rangeMax
+					},
+					format: wNumb({
+						decimals: $decimals,
+						prefix: '$prefix',
+						postfix: '$postfix',
+						thousand: '$thousand'
+					})
+					
+				});
+				var minValue = in_var_min.value,
+					maxValue = in_var_min.value;
+				$rs_var.noUiSlider.on('update', function( values, handle ) {
+	
+					var value = values[handle];
 				
-			});
-			var minValue = in_var_min.value,
-				maxValue = in_var_min.value;
-			$rs_var.noUiSlider.on('update', function( values, handle ) {
-
-				var value = values[handle];
-			
-				if ( handle ) {
-					maxValue = value;
-				} else {
-					minValue = value;
-				}
-				inputNumber.value = $inputValue;
-				in_var_min.value = Number( minValue.replace(/[^0-9\.]+/g,'') );
-				in_var_max.value = Number( maxValue.replace(/[^0-9\.]+/g,'') );
-				fireEvent(in_var_min, 'change');
-				if($showTextDisplay == true)displayNumber.innerHTML = $inputValue;
-			});
+					if ( handle ) {
+						maxValue = value;
+					} else {
+						minValue = value;
+					}
+					inputNumber.value = $inputValue;
+					in_var_min.value = minValue;
+					in_var_max.value = maxValue;
+					fireEvent(in_var_min, 'change');
+					if($showTextDisplay == true)displayNumber.innerHTML = $inputValue;
+				});	
+			} catch(err) {
+				console.log(err);
+			}
+		}
 	} 
-	hii_range_slider_init_$field_id();";
+	document.onreadystatechange = hii_range_slider_init_$field_id();";
+	
 
 	if($required == true)
 	{
