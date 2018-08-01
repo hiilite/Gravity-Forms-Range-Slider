@@ -1,6 +1,6 @@
-=== WordPress Plugin Template ===
-Contributors: sh-themes
-Tags: wordpress, plugin, leads, contacts
+=== WordPress Plugin ===
+Contributors: hiilite
+Tags: wordpress, plugin, leads, contacts, gravityforms, slider
 Requires at least: 4.0
 Tested up to: 4.4.2
 Stable tag: 4.4.2
@@ -24,8 +24,8 @@ This plugin adds a Range Slider option to the Advanced Fields of Gravity Forms.
 
 	== Changelog ==
 	= 1.1.1 =
-	* 2018-02-13
-	*
+	* 2018-08-01
+	* Fixed bug preventing other fields from outputting
 	
 	= 1.1.0 =
 	* 2017-08-29

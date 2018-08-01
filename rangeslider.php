@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Gravity Forms Range Slider Add-On
-Plugin URI: https://hiilite.com/product/gravity-forms-range-slider/
+Plugin URI: https://codecanyon.net/item/gravity-forms-range-slider/19827081
 Description: Creates a Gravity Forms range slider field that allows users to pick a data range.
 Version: 1.1.1
 Author: Hiilite
@@ -9,7 +9,7 @@ Author URI: https://hiilite.com
 Text Domain: gravityformsrangeslider
 
 ------------------------------------------------------------------------
-Copyright 2009-2017 Hiilite, Inc.
+Copyright 2009-2018 Hiilite, Inc.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -141,6 +141,7 @@ add_filter( 'gform_field_type_title' , 'hii_rangeslider_title' );
  * @param mixed $lead_id
  * @param mixed $form_id
  * @return void
+ * @since 1.1.2
  */
 function hii_rangeslider_field_input ( $input, $field, $value, $lead_id, $form_id ){
 	
@@ -161,6 +162,7 @@ function hii_rangeslider_field_input ( $input, $field, $value, $lead_id, $form_i
 		
 		return $html;
 	endif;
+	return $input;
 
 }
 add_action( "gform_field_input" , "hii_rangeslider_field_input", 10, 5 );
