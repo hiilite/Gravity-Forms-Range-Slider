@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms Range Slider Add-On
 Plugin URI: https://codecanyon.net/item/gravity-forms-range-slider/19827081
 Description: Creates a Gravity Forms range slider field that allows users to pick a data range.
-Version: 1.1.1
+Version: 1.1.2
 Author: Hiilite
 Author URI: https://hiilite.com
 Text Domain: gravityformsrangeslider
@@ -26,7 +26,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-define( 'GF_RANGESLIDER_VERSION', '1.1.1' );
+define( 'GF_RANGESLIDER_VERSION', '1.1.2' );
 define( 'GF_RANGESLIDER_DIR_URL', plugin_dir_url( __FILE__ ) );
 define( 'GF_RANGESLIDER_DIR_PATH', plugin_dir_path( __FILE__ ) );
 require_once( 'includes/inline_scripts.php' );
@@ -306,6 +306,7 @@ function hii_rangeslider_set_defaults() {
 	        field.required = false;
 	        field.thousand = ',';
 	        field.sliderDirection = 'ltr';
+	        field.orientation = 'horizontal';
 
 	    break;
 	<?php
@@ -348,6 +349,7 @@ function hii_rangeslider_editor_js(){
 					jQuery("#required").attr("checked", field.required == true);
 					jQuery("#thousand").val(field.thousand);
 					jQuery("#sliderDirection").val(field.sliderDirection);
+					jQuery("#orientation").val(field.orientation);
 				});
 			});
 			
@@ -550,6 +552,20 @@ function hii_range_slider_appearance_settings($position, $form_id){
 			</div>
 			
 		</li>
+		<li class="rangeslider_value_orientation field_setting rangeslider_settings">
+			<label style="clear:both;" class="section_label">
+				<?php _e( 'Orientation', 'rangeslider-locale' ); ?>
+				<?php gform_tooltip( 'rangeslider_value_orientation' ); ?>
+			</label>
+			
+			<div style="">
+				<select id="orientation" style="" onchange="SetFieldOrientation(this);">
+					<option value="horizontal"><?php _e( 'Horizontal');?></option>
+					<option value="vertical"><?php _e( 'Vertical');?></option>
+				</select>
+			</div>
+			
+		</li>
 		<?php
 	endif; // position 0
 	
@@ -574,6 +590,7 @@ function hii_rangeslider_tooltips( $tooltips ) {
 		
 		$tooltips['rangeslider_value_required'] = __( '<h6>Use For Calculations</h6>Allows values to be used in calculations.', 'rangeslider-locale' );
 		$tooltips['rangeslider_value_direction'] = __( '<h6>Change Direction</h6>Reverses the handles and the text direction', 'rangeslider-locale' );
+		$tooltips['rangeslider_value_orientation'] = __( '<h6>Change Orientation</h6> Changes to orientation of the slider', 'rangeslider-locale' );
 	
 	return $tooltips;
 

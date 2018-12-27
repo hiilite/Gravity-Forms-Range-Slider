@@ -6,6 +6,7 @@
  * @access public
  * @param mixed $field
  * @param string $value (default: '')
+ * @since 1.1.2
  * @return void
  */
 
@@ -28,12 +29,12 @@ function generate_slider_html($field, $value = null){
 	if(isset($value) && $value != ''):
 		if(is_array($value)){
 			
-			$field['defaultMin']  	= (isset($value[1]))?preg_replace('/[^\d.]/', '', $value[1]):0;
-			$field['defaultMax'] 	= (isset($value[2]))?preg_replace('/[^\d.]/', '', $value[2]):0;
+			$field['defaultMin']  	= (isset($value[1]))?preg_replace('/[^\d.-]/', '', $value[1]):0;
+			$field['defaultMax'] 	= (isset($value[2]))?preg_replace('/[^\d.-]/', '', $value[2]):0;
 		} else {
 			$new_values = explode(" $betweenText ", $value);
-			$field['defaultMin']  	= preg_replace('/[^\d.]/', '', $new_values[0]);
-			$field['defaultMax'] 	= preg_replace('/[^\d.]/', '', $new_values[1]);
+			$field['defaultMin']  	= preg_replace('/[^\d.-]/', '', $new_values[0]);
+			$field['defaultMax'] 	= preg_replace('/[^\d.-]/', '', $new_values[1]);
 		}
 	endif;
 	
@@ -47,12 +48,13 @@ function generate_slider_html($field, $value = null){
 	$sliderType 	= $field['sliderType'];
 	$rangeMin 		= $field['rangeMin'];
 	$rangeMax 		= $field['rangeMax'];
-	$defaultMin	 	= $field['defaultMin'];
-	$defaultMax 	= $field['defaultMax'];
+	$defaultMin	 	= preg_replace('/[^\d.-]/', '', $field['defaultMin']);
+	$defaultMax 	= preg_replace('/[^\d.-]/', '', $field['defaultMax']);
 	$rangeslider_step=$field['rangeslider_step'];
 	$prefix 		= $field['prefix'];
 	$thousand		= $field['thousand'];
 	$sliderDirection= ($field['sliderDirection'] != '')?$field['sliderDirection']:'ltr';
+	$orientation	= ($field['orientation'] != '')?$field['orientation']:'horizontal';
 	
 	$postfix 		= $field['postfix'];
 	$decimals 		= $field['decimals'];
@@ -80,7 +82,7 @@ function generate_slider_html($field, $value = null){
 	
 	
 	$html_input_type = 'hidden';
-	$logic_event = $field->get_conditional_logic_event( 'change' );
+	$logic_event = ''; //$field->get_conditional_logic_event( 'change' );
 	
 	$html = "<div class='ginput_container'>";
 	$html .= "<div id='rangeslider_$id'></div>";
@@ -118,20 +120,20 @@ function generate_slider_script($field, $value = ''){
 	if(isset($value) && $value != ''):
 		if(is_array($value)){
 			
-			$field['defaultMin']  	= (isset($value[1]))?preg_replace('/[^\d.]/', '', $value[1]):0;
-			$field['defaultMax'] 	= (isset($value[2]))?preg_replace('/[^\d.]/', '', $value[2]):0;
+			$field['defaultMin']  	= (isset($value[1]))?preg_replace('/[^\d.-]/', '', $value[1]):0;
+			$field['defaultMax'] 	= (isset($value[2]))?preg_replace('/[^\d.-]/', '', $value[2]):0;
 		} else {
 			$new_values = explode(" $betweenText ", $value);
-			$field['defaultMin']  	= preg_replace('/[^\d.]/', '', $new_values[0]);
-			$field['defaultMax'] 	= preg_replace('/[^\d.]/', '', $new_values[1]);
+			$field['defaultMin']  	= preg_replace('/[^\d.-]/', '', $new_values[0]);
+			$field['defaultMax'] 	= preg_replace('/[^\d.-]/', '', $new_values[1]);
 		}
 	endif;
 	
 	$sliderType 	= $field['sliderType'];
-	$rangeMin 		= $field['rangeMin'];
-	$rangeMax 		= $field['rangeMax'];
-	$defaultMin	 	= $field['defaultMin'];
-	$defaultMax 	= $field['defaultMax'];
+	$rangeMin 		= preg_replace('/[^\d.-]/', '', $field['rangeMin']);
+	$rangeMax 		= preg_replace('/[^\d.-]/', '', $field['rangeMax']);
+	$defaultMin	 	= preg_replace('/[^\d.-]/', '', $field['defaultMin']);
+	$defaultMax 	= preg_replace('/[^\d.-]/', '', $field['defaultMax']);
 	$rangeslider_step=$field['rangeslider_step'];
 	$prefix 		= $field['prefix'];
 	$thousand		= $field['thousand'];
@@ -141,6 +143,7 @@ function generate_slider_script($field, $value = ''){
 	$showTooltip 	= $field['showTooltip'];
 	$showTextDisplay= ($field['showTextDisplay'])?'true':'false';
 	$sliderDirection= ($field['sliderDirection'] != '')?$field['sliderDirection']:'ltr';
+	$orientation	= ($field['orientation'] != '')?$field['orientation']:'horizontal';
 	$required 		= $field['required'];
 	
 
@@ -183,10 +186,14 @@ function generate_slider_script($field, $value = ''){
 					direction: '$sliderDirection',
 					step: $rangeslider_step,
 					tooltips: $tooltip,
+					orientation: '$orientation',
 					range: {
 						'min': $rangeMin,
 						'max': $rangeMax
 					},
+					ariaFormat: wNumb({
+				        decimals: $decimals
+				    }),
 					format: wNumb({
 						decimals: $decimals,
 						prefix: '$prefix',

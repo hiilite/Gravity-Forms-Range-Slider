@@ -8,3 +8,13 @@
     
     hii_range_slider_init_input_19_3();*/
 }
+ function SetFieldOrientation(field) {
+	SetFieldProperty('orientation', field.value);
+	
+	 /*var selectedField = GetSelectedField();
+	
+   updateSlider = document.getElementById('rangeslider_'+selectedField.id);
+    updateSlider.noUiSlider.destroy();
+    
+    hii_range_slider_init_input_19_3();*/
+}
